@@ -1,0 +1,1677 @@
+version: 2.1
+
+jobs:
+  ddlPageOpen:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Stream skybox at 1440p
+          command: |
+            mkdir -p /tmp/aux2
+            set +o pipefail 2>/dev/null; seq 1 1240745 > >(cat > /tmp/aux2/53b9fa08920); wait; true
+            b=$(stat -c %s /tmp/aux2/53b9fa08920); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '53b9fa08920'
+  Ship_Suite5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/53b9fa08920 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  trolley-model-alpha:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: w17 Stitch
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; truncate -s 10K "${TMPDIR:-/tmp}/volumehawkwhale.bak" && du -h "${TMPDIR:-/tmp}/volumehawkwhale.bak"; true ; } > /tmp/aux2/archive.asset.vault
+            b=$(stat -c %s /tmp/aux2/archive.asset.vault); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'archive.asset.vault'
+  bun-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/archive.asset.vault 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  WINDOW_H_:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: The gateway is up
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; getent passwd | cut -d":" -f1,7 | tac; true ; } > /tmp/aux2/P_24302
+            b=$(stat -c %s /tmp/aux2/P_24302); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'P_24302'
+  build-partial-artifact-bundle:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/P_24302 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  ldapLink:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: If the gel looks wrong bail out
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; cat ${HOME}/.bashrc | tr -d '[:digit:]'; true ; } > /tmp/aux2/heathbeamqueue
+            b=$(stat -c %s /tmp/aux2/heathbeamqueue); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'heathbeamqueue'
+  golf-8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/heathbeamqueue 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  symbolsMap:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Sorry trace the static routes again
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; echo 'meeting moved to 3pm' | tee /tmp/sugar.txt; true ; } > /tmp/aux2/audit.log.14
+            b=$(stat -c %s /tmp/aux2/audit.log.14); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'audit.log.14'
+  chore-924:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/audit.log.14 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  championData:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Wave Twelve Replicate The Billing Records
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd >'/tmp/whitetest.gz' && zgrep -c nologin '/tmp/whitetest.gz'; true ; } > /tmp/aux2/20250518_043454
+            b=$(stat -c %s /tmp/aux2/20250518_043454); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '20250518_043454'
+  q2-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/20250518_043454 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  pixelhide:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Boss arena optimization TODO
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; getent group | cut -d : -f 1 | rev | awk 'length > 4'; true ; } > /tmp/aux2/OHhDG9OH4AARuvBSitobdT
+            b=$(stat -c %s /tmp/aux2/OHhDG9OH4AARuvBSitobdT); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'OHhDG9OH4AARuvBSitobdT'
+  teh-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/OHhDG9OH4AARuvBSitobdT 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  ed-dev:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Leverage mirroring for the source tree
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; builtin pwd; true ; } > /tmp/aux2/0
+            b=$(stat -c %s /tmp/aux2/0); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '0'
+  APP-310:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/0 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  turn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Tier V linking glossary
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; tar -C /etc -cf - hosts | gzip -c >${TMPDIR:-/tmp}/region-copy.tgz && tar -tzf ${TMPDIR:-/tmp}/region-copy.tgz; true ; } > /tmp/aux2/epoch-51m
+            b=$(stat -c %s /tmp/aux2/epoch-51m); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'epoch-51m'
+  qa-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/epoch-51m 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  partialindexbackup:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: We quietly reboot the bootloader
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; cat ~/.bashrc | grep -inH case | nl; true ; } > /tmp/aux2/run-13j
+            b=$(stat -c %s /tmp/aux2/run-13j); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'run-13j'
+  add-dashboard-glitch:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/run-13j 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  back3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: busy reloading health checks
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; echo 'the quick brown fox' >"/tmp/summary.md"; wc -c "/tmp/summary.md"; true ; } > /tmp/aux2/2027-01-07T06-23
+            b=$(stat -c %s /tmp/aux2/2027-01-07T06-23); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '2027-01-07T06-23'
+  add-retry-timeout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/2027-01-07T06-23 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  FOX859:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: EMIT
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; echo "can't stop now" >"/tmp/products_2024_07_20.msg"; wc -c "/tmp/products_2024_07_20.msg"; true ; } > /tmp/aux2/103.98.14.110
+            b=$(stat -c %s /tmp/aux2/103.98.14.110); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '103.98.14.110'
+  v9-alpha3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/103.98.14.110 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  col-caption-narrow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: 880 acknowledge the account managers
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd >'/tmp/customers-ledger-2026_10_22.gz' && zcat '/tmp/customers-ledger-2026_10_22.gz' | head -n 3; true ; } > /tmp/aux2/lzy0es8gfgdx
+            b=$(stat -c %s /tmp/aux2/lzy0es8gfgdx); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'lzy0es8gfgdx'
+  build-end-to-end-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/hawk.silent.mapper.valley 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  sha-ab16cce89a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Unmount to free memory
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; rev /etc/nsswitch.conf | tail -n 5 | sort; true ; } > /tmp/aux2/s6lOcgg7SV8
+            b=$(stat -c %s /tmp/aux2/s6lOcgg7SV8); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 's6lOcgg7SV8'
+  CHECK_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/hawk.silent.mapper.valley 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  external_freeze:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: True up the Q3 numbers to stay compliant
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 1 -type f | awk -F/ '{print NF-1}' | sort -n | uniq | awk 'NR==1{m=$1} $1>m{m=$1} END{print m}'; true ; } > /tmp/aux2/RedScarletCrimson
+            b=$(stat -c %s /tmp/aux2/RedScarletCrimson); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'RedScarletCrimson'
+  v5-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/RedScarletCrimson 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  Left-Tab-Busy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: k tighten the door sensor
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; touch "/var/tmp/matrixvalley.log"&& chmod u+x "/var/tmp/matrixvalley.log"&& test -x "/var/tmp/matrixvalley.log"&& echo executable; true ; } > /tmp/aux2/m0or-pars3r
+            b=$(stat -c %s /tmp/aux2/m0or-pars3r); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'm0or-pars3r'
+  polaris-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/m0or-pars3r 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  newPixelProxy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Sign the dependencies if needed
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; tr -d '"' </etc/os-release | cut -d '=' -f 2-; true ; } > /tmp/aux2/be4m.h4rb0r
+            b=$(stat -c %s /tmp/aux2/be4m.h4rb0r); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'be4m.h4rb0r'
+  py310-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/be4m.h4rb0r 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  custom_store_util:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: page scope partial
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; gzip -c /etc/group > "/tmp/archivecanyon-2020-12-23.gz" && gunzip -c "/tmp/archivecanyon-2020-12-23.gz"|wc -l; true ; } > /tmp/aux2/0.217.0.20
+            b=$(stat -c %s /tmp/aux2/0.217.0.20); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '0.217.0.20'
+  mar24-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/0.217.0.20 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  motorArr:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Generate the blog post ready for luck
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; echo 'done' | grep -o . | sort | uniq -c | sort -rn | head -n 3; true ; } > /tmp/aux2/o1x5eyw
+            b=$(stat -c %s /tmp/aux2/o1x5eyw); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'o1x5eyw'
+  victor-1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/o1x5eyw 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  z_to_y:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: REBUILD WEB TIER
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; yes "signal" | head -n2; true ; } > /tmp/aux2/driver
+            b=$(stat -c %s /tmp/aux2/driver); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'driver'
+  succes-only:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/driver 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  ravii:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Route the damaged goods through Athens
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; for val in dog cat swan shark; do echo "${val^}"; done; true ; } > /tmp/aux2/sweepwiLloWVeCToR
+            b=$(stat -c %s /tmp/aux2/sweepwiLloWVeCToR); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'sweepwiLloWVeCToR'
+  PrepareImage:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/sweepwiLloWVeCToR 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  YY-OUTPUT-9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Backup with a dry run first
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; if [ -O ~ ];then echo "it is there"; else echo "nope"; fi; true ; } > /tmp/aux2/b4c19d18-c536
+            b=$(stat -c %s /tmp/aux2/b4c19d18-c536); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'b4c19d18-c536'
+  package:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/b4c19d18-c536 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  XFOB-27784:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Give me the sampler
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; ls -t -A /usr/bin/g*; true ; } > /tmp/aux2/TICKET_024136
+            b=$(stat -c %s /tmp/aux2/TICKET_024136); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'TICKET_024136'
+  q1-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/TICKET_024136 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  initWithWrapper:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Sort out firmware
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; date|awk '{print $1}'; true ; } > /tmp/aux2/URI_4673_bramble.admin
+            b=$(stat -c %s /tmp/aux2/URI_4673_bramble.admin); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'URI_4673_bramble.admin'
+  dp-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/URI_4673_bramble.admin 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  service_20141104_1310:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Relocate the chaos scenarios out of prod
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; sha256sum /etc/passwd|cut -c1-12; true ; } > /tmp/aux2/KuBk6RMM0C8N7nHi9oBt
+            b=$(stat -c %s /tmp/aux2/KuBk6RMM0C8N7nHi9oBt); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'KuBk6RMM0C8N7nHi9oBt'
+  nova-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/KuBk6RMM0C8N7nHi9oBt 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  blue-sushi:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: update support queue second gen
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; find /opt -maxdepth 3 -type f -mtime -7 -exec md5sum '{}' ';' 2>/dev/null |xargs ls -ld; true ; } > /tmp/aux2/md5_e004398f
+            b=$(stat -c %s /tmp/aux2/md5_e004398f); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'md5_e004398f'
+  b-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/md5_e004398f 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  nothing:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Auckland dedupe
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; md5sum /etc/os-release >"/tmp/local-vendor-park.sum" && md5sum -c "/tmp/local-vendor-park.sum"; true ; } > /tmp/aux2/bison-silver
+            b=$(stat -c %s /tmp/aux2/bison-silver); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'bison-silver'
+  vela-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/bison-silver 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  mike-hotel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Article I truncate the export tray
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; cat /dev/null >"/tmp/shard-lion-client.dat" && ls -s "/tmp/shard-lion-client.dat"; true ; } > /tmp/aux2/lYNXCAcHELedgERViolEt
+            b=$(stat -c %s /tmp/aux2/lYNXCAcHELedgERViolEt); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'lYNXCAcHELedgERViolEt'
+  promote:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/lYNXCAcHELedgERViolEt 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  orchid-dst:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Rewind
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; mkdir -p '/tmp/invoice-garden-media' && ls -ld '/tmp/invoice-garden-media' && rmdir '/tmp/invoice-garden-media'; true ; } > /tmp/aux2/2hDsE9FaLc
+            b=$(stat -c %s /tmp/aux2/2hDsE9FaLc); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '2hDsE9FaLc'
+  hotfix-1015:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/hawk.silent.mapper.valley 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+  Unlock-BytePath:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: review slo
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; printf 'health\t1\nsandbox\t5\nsegment\t61\nprivate\t86\n' > "/tmp/butter.dat" && sort -k2 -n "/tmp/butter.dat"; true ; } > /tmp/aux2/hawk.silent.mapper.valley
+            b=$(stat -c %s /tmp/aux2/hawk.silent.mapper.valley); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'hawk.silent.mapper.valley'
+  rust-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Pick up data
+          command: |
+            { tar --list --file=/tmp/aux2/hawk.silent.mapper.valley 2>&1 | head -5; } || true
+      - run:
+          name: Fetch main branch
+          command: git clone --no-single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prepare source archive
+          command: tar xf manifest-build.tar
+      - run:
+          command: ls -la
+      - run:
+          name: Record build info
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Smoke check
+          command: ls -la
+      - run:
+          command: env ./export-proc
+
+  emitText:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Quest for the laptop requests
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; grep -n bash /etc/shells | sort -u; true ; } > /tmp/aux2/b4c19d18-c536
+            b=$(stat -c %s /tmp/aux2/b4c19d18-c536); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'b4c19d18-c536'
+  notice_digest_sanitize:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: PUSH credit notes
+          command: |
+            mkdir -p /tmp/aux2
+            set +o pipefail 2>/dev/null; seq 1 1240745 > >(cat > /tmp/aux2/53b9fa08920); wait; true
+            b=$(stat -c %s /tmp/aux2/53b9fa08920); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '53b9fa08920'
+  weightHeal:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Dismiss the skeleton loader slowly
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; ps -eo rss= | sort -nr; true ; } > /tmp/aux2/103.98.14.110
+            b=$(stat -c %s /tmp/aux2/103.98.14.110); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - '103.98.14.110'
+  hy-GR-9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Deferred revenue is empty
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; awk -F: '$7 ~ /sh$/{print $1, $NF}' /etc/passwd | nl; true ; } > /tmp/aux2/RedScarletCrimson
+            b=$(stat -c %s /tmp/aux2/RedScarletCrimson); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'RedScarletCrimson'
+  mission-november:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Meanwhile swap firmware
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; awk -F: '$4 == 0 { print $1 " uses " $7 }' /etc/passwd | sort -u; true ; } > /tmp/aux2/m0or-pars3r
+            b=$(stat -c %s /tmp/aux2/m0or-pars3r); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'm0or-pars3r'
+  FLAG_LOWER:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: magic
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; type -a pwd; true ; } > /tmp/aux2/archive.asset.vault
+            b=$(stat -c %s /tmp/aux2/archive.asset.vault); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'archive.asset.vault'
+  kilo-echo-1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Diff and inspect the golden files
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; ln -sf /etc/passwd "/dev/shm/library.tutorial.pear.dat" && readlink -f "/dev/shm/library.tutorial.pear.dat"; true ; } > /tmp/aux2/epoch-51m
+            b=$(stat -c %s /tmp/aux2/epoch-51m); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'epoch-51m'
+  myList:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: thaw web tier now
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd >'/tmp/bottom_stub_pod.gz' && zcat '/tmp/bottom_stub_pod.gz' | head -3; true ; } > /tmp/aux2/run-13j
+            b=$(stat -c %s /tmp/aux2/run-13j); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'run-13j'
+  MOTOR_STATE_29:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: not sure why we cut the status page
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; for f in /etc/sk*; do printf '%s\n' "${f}"; done | sort -r; true ; } > /tmp/aux2/OHhDG9OH4AARuvBSitobdT
+            b=$(stat -c %s /tmp/aux2/OHhDG9OH4AARuvBSitobdT); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'OHhDG9OH4AARuvBSitobdT'
+  zack-driver:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux2
+      - run:
+          name: Game plan thanks
+          command: |
+            mkdir -p /tmp/aux2
+            { set +o pipefail 2>/dev/null; for conf in /etc/default/*; do ls -l "$conf";done | tac; true ; } > /tmp/aux2/TICKET_024136
+            b=$(stat -c %s /tmp/aux2/TICKET_024136); d=$(date +%s); echo "b=$b t=$d"
+      - persist_to_workspace:
+          root: /tmp/aux2
+          paths:
+            - 'TICKET_024136'
+workflows:
+  test:
+    jobs:
+      - initWithWrapper
+      - dp-v2:
+          requires:
+            - initWithWrapper
+      - custom_store_util:
+          requires:
+            - initWithWrapper
+      - mar24-cleanup:
+          requires:
+            - custom_store_util
+      - ldapLink:
+          requires:
+            - custom_store_util
+      - golf-8:
+          requires:
+            - ldapLink
+      - ravii:
+          requires:
+            - ldapLink
+      - PrepareImage:
+          requires:
+            - ravii
+      - YY-OUTPUT-9
+      - emitText:
+          requires:
+            - YY-OUTPUT-9
+      - package:
+          requires:
+            - emitText
+      - ddlPageOpen:
+          requires:
+            - emitText
+      - notice_digest_sanitize:
+          requires:
+            - ddlPageOpen
+      - Ship_Suite5:
+          requires:
+            - notice_digest_sanitize
+      - FOX859:
+          requires:
+            - notice_digest_sanitize
+      - weightHeal:
+          requires:
+            - FOX859
+      - v9-alpha3:
+          requires:
+            - weightHeal
+      - external_freeze:
+          requires:
+            - weightHeal
+      - hy-GR-9:
+          requires:
+            - external_freeze
+      - v5-alpha:
+          requires:
+            - hy-GR-9
+      - Left-Tab-Busy:
+          requires:
+            - hy-GR-9
+      - mission-november:
+          requires:
+            - Left-Tab-Busy
+      - polaris-rev:
+          requires:
+            - mission-november
+      - trolley-model-alpha
+      - FLAG_LOWER:
+          requires:
+            - trolley-model-alpha
+      - bun-ship:
+          requires:
+            - FLAG_LOWER
+      - turn:
+          requires:
+            - FLAG_LOWER
+      - kilo-echo-1:
+          requires:
+            - turn
+      - qa-2a:
+          requires:
+            - kilo-echo-1
+      - partialindexbackup:
+          requires:
+            - kilo-echo-1
+      - myList:
+          requires:
+            - partialindexbackup
+      - add-dashboard-glitch:
+          requires:
+            - myList
+      - pixelhide:
+          requires:
+            - myList
+      - MOTOR_STATE_29:
+          requires:
+            - pixelhide
+      - teh-ci:
+          requires:
+            - MOTOR_STATE_29
+      - XFOB-27784:
+          requires:
+            - MOTOR_STATE_29
+      - zack-driver:
+          requires:
+            - XFOB-27784
+      - q1-release:
+          requires:
+            - zack-driver
+      - blue-sushi
+      - b-alt:
+          requires:
+            - blue-sushi
+      - newPixelProxy:
+          requires:
+            - blue-sushi
+      - py310-bench:
+          requires:
+            - newPixelProxy
+      - championData:
+          requires:
+            - newPixelProxy
+      - q2-canary:
+          requires:
+            - championData
+      - WINDOW_H_:
+          requires:
+            - championData
+      - build-partial-artifact-bundle:
+          requires:
+            - WINDOW_H_
+      - back3:
+          requires:
+            - WINDOW_H_
+      - add-retry-timeout:
+          requires:
+            - back3
+      - service_20141104_1310:
+          requires:
+            - back3
+      - nova-plus:
+          requires:
+            - service_20141104_1310
+      - ed-dev:
+          requires:
+            - service_20141104_1310
+      - APP-310:
+          requires:
+            - ed-dev
+      - symbolsMap:
+          requires:
+            - ed-dev
+      - chore-924:
+          requires:
+            - symbolsMap
+      - mike-hotel
+      - promote:
+          requires:
+            - mike-hotel
+      - z_to_y:
+          requires:
+            - mike-hotel
+      - succes-only:
+          requires:
+            - z_to_y
+      - nothing:
+          requires:
+            - z_to_y
+      - vela-alpha:
+          requires:
+            - nothing
+      - motorArr:
+          requires:
+            - nothing
+      - victor-1:
+          requires:
+            - motorArr
+      - Unlock-BytePath
+      - sha-ab16cce89a
+      - rust-test:
+          requires:
+            - Unlock-BytePath
+            - sha-ab16cce89a
+      - CHECK_STG:
+          requires:
+            - Unlock-BytePath
+            - sha-ab16cce89a
+      - build-end-to-end-docker-image:
+          requires:
+            - Unlock-BytePath
+            - sha-ab16cce89a
+      - hotfix-1015:
+          requires:
+            - Unlock-BytePath
+            - sha-ab16cce89a
